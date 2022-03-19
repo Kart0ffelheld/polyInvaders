@@ -1,2 +1,2 @@
 # polyInvaders
-Ataris Space-Invaders with shiny polygons and lots of gamemodes!
+Space-Invaders with shiny polygons and different gamemodes!
