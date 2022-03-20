@@ -9,7 +9,7 @@ var blockerCounter = 3,
     blockerSize = 160,
     blockerHitpoints = 5;
 var bulletSize = 15; // Size of all bullets
-var undeadPlayers = true; //You cant die
+var undeadPlayers = false; //You cant die
 var numberOfPlayers = 2;
 //
 //
@@ -271,24 +271,26 @@ function gameIsOver(why) {
         textSize(canvasWidth / 50);
         text("Press the spacebar after you have resized it.", canvasWidth / 2, canvasHeight / 2 + 30)
     } else {
-        animate.endOfGame()
         setTimeout(function() { 
             //First stop the game and then write on top of it
             noLoop();
             //setTimeout(function() {
             //background(0);
             fill(0)
-            rect(canvasWidth / 2, canvasHeight - 110, 300, 100);
             textSize(70);
-            fill(textColor);
             if (why == 'won') {
+                animate.endOfGame()
                 win.play();
+                rect(canvasWidth / 2, canvasHeight - 110, 300, 100);
+                fill(textColor);
                 text("You won!", canvasWidth / 2, canvasHeight - 100);
                 scoreCounter.show();
                 textSize(15);
                 text("Press the spacebar to play again.", canvasWidth / 2, canvasHeight - 70);
             }
             if (why == 'lost') {
+                rect(canvasWidth / 2, canvasHeight - 110, 500, 100);
+                fill(textColor);
                 text("You have lost!", canvasWidth / 2, canvasHeight - 100);
                 scoreCounter.show();
                 textSize(15);
