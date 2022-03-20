@@ -1,9 +1,9 @@
 var lastShoot;
 
 function Enemy(x, y, corners, dead) {
-    this.w = 25;
+    this.w = 30;
     this.pos = createVector();
-    this.notShootChance = 8;
+    this.notShootChance = enemyNotShootChance;
     this.bullets = [];
     this.corners = corners || floor(random(4)) + 3;
     this.bulletSpeed = enemyBulletSpeed;
@@ -14,18 +14,17 @@ function Enemy(x, y, corners, dead) {
     //
     this.update = function() {
         if (this.dead == false) {
-            for (var i = players.length - 1; i >= 0; i--) {
-                curr = players[i];
-                if (curr.x < this.pos.x + 10 && curr.x > this.pos.x - 10 && millis() - lastShoot > 800 && floor(random(this.notShootChance)) == 0) {
-                    lastShoot = millis();
+            curr = player;
+            if (millis() - lastShoot > enemyShootSpeed) {
+                if (curr.x < this.pos.x + 10 && curr.x > this.pos.x - 10 && floor(random(this.notShootChance)) == 0) {
                     this.newBullet();
                 }
-                if (this.pos.y >= curr.y && !undeadPlayers) {
-                    lost = true;
+                if (floor(random(this.notShootChance * 300)) == 0) {
+                    this.newBullet();
                 }
             }
-            if (floor(random(this.notShootChance * 300)) == 0 && millis() - lastShoot > 800) {
-                this.newBullet();
+            if (this.pos.y >= curr.y && !undeadPlayers) {
+                lost = true;
             }
         }
     }
@@ -34,7 +33,7 @@ function Enemy(x, y, corners, dead) {
     }
     this.setup = function(i, number, firstPos) {
         if (!firstPos) firstPos = this.w * 2;
-        this.pos.x = firstPos + i * (canvasWidth / number) / 1.5;
+        this.pos.x = firstPos + i * (windowWidth / number) / 1.5;
     }
     this.show = function() {
         fill(this.color);
@@ -45,9 +44,9 @@ function Enemy(x, y, corners, dead) {
     }
     this.newBullet = function() {
         if (start == true) {
+            lastShoot = millis();
             var bullet = createVector(this.pos.x, this.pos.y);
             bullet.active = true;
-            bullet.spawn_y = this.pos.y
             this.bullets.push(bullet);
             animate.enemyShooted(this.pos.x, this.pos.y + this.w / 2, this.color);
         }
@@ -58,9 +57,7 @@ function Enemy(x, y, corners, dead) {
                 this.bullets[i].y += this.bulletSpeed;
                 fill(this.color);
                 polygon(this.bullets[i].x, this.bullets[i].y, bulletSize, this.corners);
-                animate.enemyBulletTrail(this.bullets[i], bulletSize, this.color, this.corners)
-
-                if (this.bullets[i].y > /*player.y + player.h * 2 */ canvasWidth) {
+                if (this.bullets[i].y > /*player.y + player.h * 2 */ windowHeight) {
                     this.bullets.splice(i, 1);
                 }
             }
@@ -71,14 +68,12 @@ function Enemy(x, y, corners, dead) {
             if (this.bullets[i].y > height) {
                 this.bullets.splice(i, 1);
             } else if (this.bullets[i].active == true) {
-                for (var j = players.length - 1; j >= 0; j--) {
-                    if (players[j].alive == true && this.bullets[i]) {
-                        curr = players[j];
-                        if (max(curr.x, this.bullets[i].x) - min(curr.x, this.bullets[i].x) < curr.w && max(curr.y, this.bullets[i].y) - min(curr.y, this.bullets[i].y) < curr.h) {
-                            players[j].die(this.color);
-                            this.bullets[i].active = false; //Delete bullet and skip this bullet for the other players
-                            i--;
-                        }
+                if (player.dead == false && this.bullets[i]) {
+                    curr = player;
+                    if (max(curr.x, this.bullets[i].x) - min(curr.x, this.bullets[i].x) < curr.w && max(curr.y, this.bullets[i].y) - min(curr.y, this.bullets[i].y) < curr.h) {
+                        player.die(this.color);
+                        this.bullets[i].active = false; //Delete bullet and skip this bullet for the other players
+                        i--;
                     }
                 }
             }

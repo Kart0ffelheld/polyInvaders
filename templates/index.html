@@ -6,17 +6,20 @@
         </title>
     </head>
     <body>
-        <p onclick="link('normal')">
-            Normal
+        <p onclick="link('normal?p=1')">
+            1 Player
+        </p>
+        <p onclick="link('normal?p=2')">
+            2 Players
         </p>
         <p onclick="link('versus')">
             Versus
         </p>
-        <p onclick="link('online_3.0')">
-            Online (not really working...)
+        <p onclick="link('online_3.0')" class="notworking">
+            Online (work in progress...)
         </p>
-        <p onclick="link('NN')">
-            AI playing it
+        <p onclick="link('NN')" class="notworking">
+            Neural Network playing it (work in progress...)
         </p>
     </body>
 </html>
@@ -31,6 +34,9 @@
         padding: 0;
         overflow: hidden;
         background-color: black;
+    }
+    p.notworking:hover {
+        background-color: orangered;
     }
     p {
         width: 50%;

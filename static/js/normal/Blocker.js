@@ -12,7 +12,7 @@ function Blocker() {
         rect(this.x, this.y, this.w, this.h);
     }
     this.setup = function(i, number) {
-        this.x = i * (windowWidth / number);
+        this.x = i * (canvasWidth / number);
     }
     this.update = function() {
         for (var i = enemyRows.length - 1; i >= 0; i--) {

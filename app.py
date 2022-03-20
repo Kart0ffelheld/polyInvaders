@@ -9,3 +9,7 @@ def index():
 @app.route("/normal")
 def normal():
     return render_template('normalPoly.html')
+
+@app.route("/versus")
+def versus():
+    return render_template('versusPoly.html')

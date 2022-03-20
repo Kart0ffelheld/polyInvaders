@@ -1,6 +1,6 @@
 function BossEnemy() {
     this.isABoss = true;
-    this.w = 30;
+    this.w = 25;
     var spawnX = firstEnemy.pos.x;
     this.pos = createVector(spawnX, this.w * 2);
     this.bullets = [];
@@ -38,18 +38,17 @@ function BossEnemy() {
         makeTriangle(this.pos.x, this.pos.y, this.w);
     }
     this.move = function() {
-        this.pos.x += (this.headingDir * 5);
+        this.pos.x += (this.headingDir * 3);
     }
     this.showBullets = function() {
         for (var i = this.bullets.length - 1; i >= 0; i--) {
             if (this.bullets[i].active == true) {
-                clog("heya")
                 this.bullets[i].y += this.bulletSpeed;
                 fill(this.color);
                 makeTriangle(this.bullets[i].x, this.bullets[i].y, bulletSize);
                 animate.bossEnemyBulletTrail(this.bullets[i], bulletSize, this.color)
                 
-                if (this.bullets[i].y > /*player.y + player.h * 2 */ windowHeight) {
+                if (this.bullets[i].y > /*player.y + player.h * 2 */ canvasWidth) {
                     this.bullets.splice(i, 1);
                 }
             }

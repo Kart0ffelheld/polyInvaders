@@ -12,7 +12,7 @@ function Player() {
     this.rightKey = [];
     this.shootKey = [];
     this.number;
-    this.x = random(this.w, windowWidth - this.w);
+    this.x = random(this.w, canvasWidth - this.w);
     /*this.calcX = function() {
         if (this.number == 1) {
             return 
@@ -25,7 +25,7 @@ function Player() {
         }
     }
     this.x = this.calcX();*/
-    this.y = windowHeight - this.w - this.w / 6;
+    this.y = canvasHeight - this.w - this.w / 6;
     this.showHelp;
     this.kills = 0;
     this.keys = {
@@ -40,18 +40,6 @@ function Player() {
     }
     //
     this.show = function() {
-        // beginShape();
-        // vertex(this.x, /*              */ this.y - this.w / 2);
-        // vertex(this.x + (this.w / 3) / 2, this.y - this.w / 2);
-        // vertex(this.x + (this.w / 3) / 2, this.y - this.w / 2 + this.w / 3);
-        // vertex(this.x + this.w / 2, /* */ this.y - this.w / 2 + this.w / 3);
-        // vertex(this.x + this.w / 2, /* */ this.y + this.w / 3);
-        // vertex(this.x - this.w / 2, /* */ this.y + this.w / 3);
-        // vertex(this.x - this.w / 2, /* */ this.y - this.w / 2 + this.w / 3);
-        // vertex(this.x - (this.w / 3) / 2, this.y - this.w / 2 + this.w / 3);
-        // vertex(this.x - (this.w / 3) / 2, this.y - this.w / 2);
-        // vertex(this.x, /*              */ this.y - this.w / 2);
-        // endShape(CLOSE);
         fill(this.c);
         beginShape();
         vertex(this.x, this.y - this.h / 3);
@@ -78,7 +66,6 @@ function Player() {
             textSize(20);
             text(this.kills, this.x, this.y - this.h);
         }
-        //clog(this.x);
     }
     //
     this.move = function() {
@@ -111,7 +98,7 @@ function Player() {
         }
     }
     this.moveRight = function() {
-        if (this.x <= windowWidth - this.w) {
+        if (this.x <= canvasWidth - this.w) {
             this.x += this.xspeed;
         }
     }

@@ -1,5 +1,4 @@
-function Animate() {
-    this.trailLength = 15 //copies of the bullet with lower gamma
+function AnimationController() {
     this.enemyDeath = function(x, y, enemyC, bulletC) {
         enemyKill.play();
         if (enemyCounter > 1) {
@@ -26,7 +25,17 @@ function Animate() {
         var antiLifetime = 5;
         var range = 18;
         var size = 40;
-        var count = 20;
+        var count = 70;
+        var c = [bulletC, playerC];
+        playerAnimations.push(new Explosion(x, y, c, antiLifetime, range, size, count));
+        playerAnimations[playerAnimations.length - 1].explode();
+    }
+    this.opponentDeath = function(x, y, playerC, bulletC) {
+        playerKill.play();
+        var antiLifetime = 5;
+        var range = 18;
+        var size = 40;
+        var count = 70;
         var c = [bulletC, playerC];
         playerAnimations.push(new Explosion(x, y, c, antiLifetime, range, size, count));
         playerAnimations[playerAnimations.length - 1].explode();
@@ -37,66 +46,6 @@ function Animate() {
         var range = 3;
         var size = 5;
         var count = 10;
-        playerAnimations.push(new Explosion(x, y, c, antiLifetime, range, size, count));
-        playerAnimations[playerAnimations.length - 1].explode();
-    }
-
-    this.playerBulletTrail = function(bullet, bulletSize) {
-        bulletsToDraw = int((bullet.spawn_y - bullet.y) / bulletSize + 1)
-        if (bulletsToDraw > this.trailLength) {
-            bulletsToDraw = this.trailLength
-        }
-
-        for (var i = 0; i < bulletsToDraw; i++) {
-            curr_y = bullet.y + 10 * i
-            green_col = ((i-15)*0.9)**(2) + 10 //something arbitrary
-            curr_color = color(0, green_col, 0)
-
-            fill(curr_color)
-            ellipse(bullet.x, curr_y, bulletSize)
-        }
-    }
-
-    this.enemyBulletTrail = function(bullet, bulletSize, c, corners) {
-        bulletsToDraw = int((bullet.y - bullet.spawn_y) / bulletSize + 1)
-        if (bulletsToDraw > this.trailLength) {
-            bulletsToDraw = this.trailLength
-        }
-
-        for (var i = 0; i < bulletsToDraw; i++) {
-            curr_y = bullet.y - 10 * i
-            col_mod = ((i-15)*0.065)**(2) + 0.05 //something arbitrary
-            curr_color = color(c.levels[0] * col_mod, c.levels[1] * col_mod, c.levels[2] * col_mod)
-
-            fill(curr_color)
-            polygon(bullet.x, curr_y, bulletSize, corners)      
-        }
-    }
-
-    this.bossEnemyBulletTrail = function(bullet, bulletSize, c) {
-        bulletsToDraw = int((bullet.y - bullet.spawn_y) / bulletSize + 1)
-        if (bulletsToDraw > this.trailLength) {
-            bulletsToDraw = this.trailLength
-        }
-
-        for (var i = 0; i < bulletsToDraw; i++) {
-            curr_y = bullet.y - 10 * i
-            col_mod = ((i-15)*0.065)**(2) + 0.05 //something arbitrary
-            curr_color = color(c.levels[0] * col_mod, c.levels[1] * col_mod, c.levels[2] * col_mod)
-
-            fill(curr_color)
-            makeTriangle(bullet.x, curr_y, bulletSize)      
-        }
-    }
-
-    this.endOfGame = function() {
-        var x = canvasWidth / 2, 
-            y = canvasHeight / 2
-        var antiLifetime = 5;
-        var range = 40;
-        var size = 25;
-        var count = 100;
-        var c = [color(150, 0, 200), color(0, 200, 0), color(0, 0, 200), color(200, 0, 0), color(200, 200, 0)];
         playerAnimations.push(new Explosion(x, y, c, antiLifetime, range, size, count));
         playerAnimations[playerAnimations.length - 1].explode();
     }
@@ -128,7 +77,8 @@ function Explosion(x, y, c, antiLifetime, range, size, count) {
                 var p = new Particle(this.x, this.y, this.c, antiLifetime, range, size);
                 this.particles.push(p);
             } else {
-                var index = floor(random(0, this.c.length));
+                var index = floor(random(0, 4));
+                if (index == 2 || index == 3) index = 1;
                 var rndmC = this.c[index];
                 var p = new Particle(this.x, this.y, rndmC, antiLifetime, range, size);
                 this.particles.push(p);
